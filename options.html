@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Freeze Tabs – Options</title>
+
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e5e7eb;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #0f172a;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 32px;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* Switch row */
+    .option {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      gap: 16px;
+    }
+
+    .option label {
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Switch */
+    .switch {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background-color: #e5e7eb;
+      border-radius: 999px;
+      transition: background-color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 18px;
+      width: 18px;
+      left: 2px;
+      top: 2px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.2s ease;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    }
+
+    .switch input:checked + .slider {
+      background-color: var(--accent);
+    }
+
+    .switch input:checked + .slider::before {
+      transform: translateX(18px);
+    }
+
+    .switch input:focus + .slider {
+      outline: 2px solid #cbd5f5;
+      outline-offset: 2px;
+    }
+
+    /* Fields */
+    .field {
+      margin-top: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 90px;
+      resize: vertical;
+      padding: 10px 12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 13px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: var(--accent);
+    }
+
+    /* Buttons */
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    button {
+      padding: 8px 14px;
+      font-size: 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #fff;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    button:hover {
+      background: #f1f5f9;
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <h1>Options</h1>
+
+  <div class="card">
+    <div class="section-title">Behavior</div>
+
+    <div class="option">
+      <label for="onlyCurrentWindow">Only current window</label>
+      <label class="switch">
+        <input type="checkbox" id="onlyCurrentWindow" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="option">
+      <label for="excludeCurrentTab">Exclude current tab</label>
+      <label class="switch">
+        <input type="checkbox" id="excludeCurrentTab" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="option">
+      <label for="excludePinnedTabs">Exclude pinned tabs</label>
+      <label class="switch">
+        <input type="checkbox" id="excludePinnedTabs" />
+        <span class="slider"></span>
+      </label>
+    </div>
+
+    <div class="option">
+      <label for="excludeAudibleTabs">Exclude audible tabs</label>
+      <label class="switch">
+        <input type="checkbox" id="excludeAudibleTabs" />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="section-title">Filters</div>
+
+    <div class="field">
+      <label for="excludeTitleKeywords">
+        Exclude title keywords (one per line)
+      </label>
+      <textarea id="excludeTitleKeywords"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="excludeUrlKeywords">
+        Exclude URL keywords (one per line)
+      </label>
+      <textarea id="excludeUrlKeywords"></textarea>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="actions">
+      <button id="import">Import config</button>
+      <button id="export" class="primary">Export config</button>
+      <input type="file" id="fileInput" />
+    </div>
+  </div>
+</div>
+
+<script src="options.js"></script>
+</body>
+</html>
